@@ -3,7 +3,7 @@ This is a small ansible role to modify the HAProxy config on a designated `[lb]`
 
 It should be run against the inventory file you are using for your OCPlatform 3 install.
 
-# Assumptions:
+## Assumptions:
   * You have a section in your inventory designating `[masters]` and `[infra]`
   * It is run against the node in the `[lb]`
 
