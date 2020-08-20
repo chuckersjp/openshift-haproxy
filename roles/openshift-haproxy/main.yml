@@ -1,0 +1,32 @@
+--- 
+# tasks file for ha-proxy 
+- name: Install HAProxy RPM 
+  yum: 
+    name: haproxy 
+    state: latest 
+
+- name: gather facts from master servers 
+  setup: 
+  delegate_to: "{{ item }}" 
+  delegate_facts: True 
+  with_items: "{{ groups['masters'] }}" 
+  
+- name: gather facts from infra servers 
+  setup: 
+  delegate_to: "{{ item }}" 
+  delegate_facts: True 
+  with_items: "{{ groups['infra'] }}" 
+  
+- name: Copy HAProxy.cfg file to LB node 
+  template: 
+    src: haproxy.cfg.j2 
+    dest: /etc/haproxy/haproxy.cfg 
+    owner: root 
+    group: root 
+    mode: 0644 
+  
+- name: Enable and Start HAProxy 
+  service: 
+  name: haproxy 
+  enabled: true 
+  state: started 
